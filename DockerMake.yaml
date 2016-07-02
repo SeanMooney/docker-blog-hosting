@@ -1,0 +1,47 @@
+go:
+    FROM: golang:alpine
+
+proxy:
+    requires:
+    - go
+    build: |
+        # ENV http_proxy=http://<proxy>:<port>
+        # ENV https_proxy=https://<proxy>:<port>
+        # ENV ftp_proxy=http://<proxy>:<port>
+        # ENV no_proxy=
+
+        # ENV HTTP_PROXY=
+        # ENV HTTPS_PROXY=
+        # ENV FTP_PROXY=
+        # ENV NO_PROXY=
+
+hugo:
+    requires:
+    - proxy
+    build_directory: hugo
+    build: |
+        RUN apk add --no-cache git
+        RUN go get -v github.com/spf13/hugo && go get -u -v github.com/spf13/hugo 
+        COPY start.sh /start.sh
+        VOLUME /logs
+        VOLUME /src
+        VOLUME /output
+        WORKDIR /src
+        CMD ["/start.sh"]
+
+caddy:
+    requires:
+    - proxy
+    build_directory: caddy
+    build: |
+        RUN apk add --no-cache git
+        RUN go get -v github.com/mholt/caddy/caddy && go get -u -v github.com/mholt/caddy/caddy 
+        VOLUME /config
+        COPY Caddyfile /config/Caddyfile
+        VOLUME /logs
+        VOLUME /src
+        VOLUME /output
+        WORKDIR /output
+        EXPOSE 80
+        EXPOSE 443
+        CMD ["caddy","-conf=/config/Caddyfile"]
