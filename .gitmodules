@@ -1,3 +1,4 @@
 [submodule "DockerMake"]
 	path = DockerMake
 	url = https://github.com/avirshup/DockerMake
+	ignore = dirty
