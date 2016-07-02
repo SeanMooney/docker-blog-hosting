@@ -22,3 +22,4 @@ pushd DockerMake
 popd
 fi
 
+git update-index --assume-unchanged caddy/Caddyfile
