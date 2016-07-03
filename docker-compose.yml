@@ -1,0 +1,28 @@
+version: '2'
+services:
+    caddy:
+        environment:
+            - email
+            - production
+        container_name: "caddy"
+        image: "seanmooney/caddy"
+        volumes:
+            - "/mnt/data/web/source:/src"
+            - "/mnt/data/web/output:/output"
+            - "/mnt/data/web/logs:/logs"
+            - "/mnt/data/web/root:/root"
+        restart: always
+        tty: true
+        network_mode: "host"
+    hugo:
+        container_name: "hugo"
+        image: "seanmooney/hugo"
+        volumes:
+            - "/mnt/data/web/source:/src"
+            - "/mnt/data/web/output:/output"
+            - "/mnt/data/web/logs:/logs"
+            - "/mnt/data/web/root:/root"
+        depends_on:
+            - caddy
+        restart: always
+

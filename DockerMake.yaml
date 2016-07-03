@@ -23,9 +23,7 @@ hugo:
         RUN apk add --no-cache git
         RUN go get -v github.com/spf13/hugo && go get -u -v github.com/spf13/hugo 
         COPY start.sh /start.sh
-        VOLUME /logs
-        VOLUME /src
-        VOLUME /output
+        RUN mkdir /logs /src /output
         WORKDIR /src
         CMD ["/start.sh"]
 
@@ -36,12 +34,10 @@ caddy:
     build: |
         RUN apk add --no-cache git
         VOLUME /root
-        COPY Caddyfile /root/Caddyfile
-        COPY caddy /root/caddy
+        COPY Caddyfile /Caddyfile
+        COPY caddy /usr/bin/caddy
         COPY start.sh /start.sh
-        VOLUME /logs
-        VOLUME /src
-        VOLUME /output
+        RUN mkdir /logs /src /output
         WORKDIR /output
         EXPOSE 80
         EXPOSE 443

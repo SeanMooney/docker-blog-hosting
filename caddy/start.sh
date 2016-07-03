@@ -1,7 +1,7 @@
 #!/bin/sh
 production=${production:="false"}
 if [[ "$production" == "true" ]]; then
-/root/caddy --conf /root/Caddyfile -email $EMAIL
+/usr/bin/caddy --conf /Caddyfile -email $email
 else
-/root/caddy --conf /root/Caddyfile -ca https://acme-staging.api.letsencrypt.org/directory -email $EMAIL
+/usr/bin/caddy --conf /Caddyfile -ca https://acme-staging.api.letsencrypt.org/directory -email $email
 fi
