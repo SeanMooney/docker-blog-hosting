@@ -35,13 +35,14 @@ caddy:
     build_directory: caddy
     build: |
         RUN apk add --no-cache git
-        RUN go get -v github.com/mholt/caddy/caddy && go get -u -v github.com/mholt/caddy/caddy 
-        VOLUME /config
-        COPY Caddyfile /config/Caddyfile
+        VOLUME /root
+        COPY Caddyfile /root/Caddyfile
+        COPY caddy /root/caddy
+        COPY start.sh /start.sh
         VOLUME /logs
         VOLUME /src
         VOLUME /output
         WORKDIR /output
         EXPOSE 80
         EXPOSE 443
-        CMD ["caddy","-conf=/config/Caddyfile"]
+        CMD ["/start.sh"]
